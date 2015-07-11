@@ -116,7 +116,7 @@ module Spree
             :cppheaderimage => payment_method.preferred_logourl.present? ? payment_method.preferred_logourl : "",
             :NoShipping => 1,
             :PaymentDetails => [payment_details(items)],
-            :BillingAgreementDetails => [billing_agreement_details(order)]
+            :BillingAgreementDetails => [billing_agreement_details]
         }}
       end
 
@@ -129,11 +129,12 @@ module Spree
         payment_method.provider
       end
 
-      def billing_agreement_details(order)
-        return {} if order.billing_type.blank?
+      def billing_agreement_details
+        return {} if params[:billing_type].blank?
+
         {
-          :BillingType => order.billing_type,
-          :BillingAgreementDescription => order.billing_agreement_description
+          :BillingType => params[:billing_type],
+          :BillingAgreementDescription => params[:billing_agreement_description]
         }
       end
 
